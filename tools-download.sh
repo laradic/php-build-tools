@@ -21,7 +21,7 @@ _mv() {
 #########################
 
 # composer
-Exec rm -f composer.phar
+Exec "rm -f composer.phar"
 Exec wget https://getcomposer.org/composer.phar
 _mv composer
 Echo success "updated: composer"
