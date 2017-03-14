@@ -1,0 +1,52 @@
+<!--~
+  ~ Part of the Laradic PHP Packages.
+  ~
+  ~ Copyright (c) 2017. Robin Radic.
+  ~
+  ~ The license can be found in the package and online at https://laradic.mit-license.org.
+  ~
+  ~ @copyright Copyright 2017 (c) Robin Radic
+  ~ @license https://laradic.mit-license.org The MIT License
+  -->
+
+<!--suppress PhingDomInspection -->
+<project name="code-quality">
+    <property name="paths.phpmd-xml" value="${paths.build-tools}/phing/tool-config/phpmd.xml"/>
+
+    <target name="report" depends="phpcpd,phpcs,phploc,phpmd" description="Run all code-quality tools and report to console"/>
+
+    <target name="phpcpd" description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="${paths.bin}/phpcpd" logoutput="${logoutput}" passthru="${passthru}">
+            <arg path="${project.basedir}/src"/>
+        </exec>
+    </target>
+
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="${paths.bin}/phpcs" logoutput="${logoutput}" passthru="${passthru}">
+            <arg value="--standard=PSR2"/>
+            <arg value="--extensions=php"/>
+            <arg value="--ignore=autoload.php"/>
+            <arg path="${project.basedir}/src"/>
+            <arg path="${project.basedir}/tests"/>
+        </exec>
+    </target>
+
+    <target name="phploc" description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
+        <exec executable="${paths.bin}/phploc" logoutput="${logoutput}" passthru="${passthru}">
+            <arg value="--count-tests"/>
+            <arg path="${project.basedir}/src"/>
+            <arg path="${project.basedir}/tests"/>
+        </exec>
+    </target>
+
+    <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="${paths.bin}/phpmd" logoutput="${logoutput}" passthru="${passthru}">
+            <arg path="${project.basedir}/src"/>
+            <arg value="text"/>
+            <arg path="${paths.phpmd-xml}"/>
+        </exec>
+    </target>
+
+
+
+</project>

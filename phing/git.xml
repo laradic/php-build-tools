@@ -1,0 +1,40 @@
+<!--~
+  ~ Part of the Laradic PHP Packages.
+  ~
+  ~ Copyright (c) 2017. Robin Radic.
+  ~
+  ~ The license can be found in the package and online at https://laradic.mit-license.org.
+  ~
+  ~ @copyright Copyright 2017 (c) Robin Radic
+  ~ @license https://laradic.mit-license.org The MIT License
+  -->
+<!--suppress PhingDomInspection -->
+<project name="git">
+    <property name="git.url" value="https://github.com"/>
+    <property name="git.owner" value="NOT SET"/>
+    <property name="git.repo" value="NOT SET"/>
+    <property name="git.commit.message" value="Auto commit"/>
+
+    <target name="add" description="Add files">
+        <exec command="git add -A" logoutput="${logoutput}" passthru="${passthru}"/>
+    </target>
+
+    <target name="commit.auto" description="Commit files with auto message">
+        <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
+    </target>
+
+    <target name="commit" description="Commit files with auto message">
+        <input message="Git commit message" propertyName="git.commit.message"/>
+        <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
+    </target>
+
+    <target name="push" description="push commit">
+        <input message="Git commit message" propertyName="git.commit.message"/>
+        <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
+    </target>
+
+
+
+
+
+</project>
