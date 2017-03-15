@@ -118,7 +118,7 @@
     <target name="phpdox" depends="phploc-ci,phpcs-ci,phpmd-ci" description="Generate project documentation using phpDox">
         <exec executable="${paths.bin}/phpdox" dir="${project.basedir}/raport" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--file"/>
-            <arg path="${phing.dir}/tool-config/phpdox.xml"/>
+            <arg path="${phing.build.phing.tool-config}/phpdox.xml"/>
         </exec>
     </target>
 
@@ -146,7 +146,7 @@
         <exec executable="${paths.bin}/phpmd" logoutput="${logoutput}" passthru="${passthru}">
             <arg path="${project.basedir}/src"/>
             <arg value="xml"/>
-            <arg path="${phing.dir}/tool-config/phpmd.xml"/>
+            <arg path="${phing.build.phing.tool-config}/tool-config/phpmd.xml"/>
             <arg value="--reportfile"/>
             <arg path="${project.basedir}/raport/logs/pmd.xml"/>
         </exec>
@@ -156,14 +156,14 @@
         <exec executable="${paths.bin}/phpmd" logoutput="${logoutput}" passthru="${passthru}">
             <arg path="${project.basedir}/src"/>
             <arg value="text"/>
-            <arg path="${phing.dir}/tool-config/phpmd.xml"/>
+            <arg path="${phing.build.phing.tool-config}/phpmd.xml"/>
         </exec>
     </target>
 
     <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
         <exec executable="${paths.bin}/phpunit" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--configuration"/>
-            <arg path="${phing.dir}/tool-config/phpunit.xml"/>
+            <arg path="${phing.build.phing.tool-config}/phpunit.xml"/>
             <arg value="--bootstrap"/>
             <arg path="${vendor.dir}/autoload.php"/>
         </exec>

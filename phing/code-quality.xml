@@ -11,7 +11,7 @@
 
 <!--suppress PhingDomInspection -->
 <project name="code-quality">
-    <property name="paths.phpmd-xml" value="${paths.build-tools}/phing/tool-config/phpmd.xml"/>
+    <property name="paths.phpmd-xml" value="${paths.build}/phing/tool-config/phpmd.xml"/>
 
     <target name="report" depends="phpcpd,phpcs,phploc,phpmd" description="Run all code-quality tools and report to console"/>
 

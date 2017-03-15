@@ -12,33 +12,28 @@
 <!--suppress PhingDomInspection -->
 <project>
     <!--Use "phing -Dtravis=true" to enable travis -->
-    <property name="travis" value="false"/>
+    <property name="local" value="true"/>
     <property name="logoutput" value="true"/>
     <property name="passthru" value="true"/>
     <property name="paths.php_cs" value="${project.basedir}/.php_cs"/>
     <property name="paths.phpdoc-xml" value="${project.basedir}/docs/structure.xml"/>
     <property name="paths.vendor" value="${project.basedir}/vendor"/>
 
-    <property name="paths.build-tools" value="${project.basedir}/build"/>
+    <property name="paths.build" value="${project.basedir}/build"/>
+    <property name="paths.build.phing" value="${paths.build}/phing"/>
+    <property name="paths.build.phing.tool-config" value="${paths.build.phing}/tool-config"/>
     <property name="paths.bin" value="${project.basedir}/build/bin"/>
-
-    <!--If working in a travis env, we'll use the package its vendor  -->
-    <if>
-        <istrue value="${travis}"/>
-        <then>
-            <property name="paths.vendor" value="${project.basedir}/vendor" override="true"/>
-        </then>
-    </if>
 
     <!--If working in a workbench setup, we'll use the project's vendor-->
     <exec command="if [ -d '${project.basedir}/../../../vendor' ]; then echo 'true'; else echo 'false'; fi;" outputProperty="output.IS_DIRECTORY_EXISTS"/>
     <if>
-        <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true"/>
+        <istrue value="${local}"/>
+        <and>
+            <equals arg1="${output.IS_DIRECTORY_EXISTS}" arg2="true"/>
+        </and>
         <then>
-            <property name="paths.vendor" value="${project.basedir}/../../../vendor"/>
+            <property name="paths.vendor" value="${project.basedir}/../../../vendor" override="true"/>
         </then>
     </if>
-
-
 
 </project>
