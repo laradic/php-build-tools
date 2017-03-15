@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpdox xmlns="http://xml.phpdox.net/config">
+<phpdox xmlns="http://xml.phpdox.net/config" silent="true">
 
-    <project name="Laradic" source="../src" workdir="phpdox">
+    <project name="Documentation" source="../../../src" workdir="phpdox">
 
         <collector publiconly="false">
             <include mask="*.php"/>
@@ -9,7 +9,9 @@
         </collector>
 
         <generator output=".">
+
             <enrich base="logs">
+
                 <source type="build"/>
                 <source type="git"/>
                 <source type="phploc"/>

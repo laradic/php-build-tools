@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.2/phpunit.xsd"
-         bootstrap="../../../../vendor/autoload.php"
+         bootstrap="../../../vendor/autoload.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          beStrictAboutCoversAnnotation="true"
@@ -10,23 +10,23 @@
          beStrictAboutTodoAnnotatedTests="true"
          forceCoversAnnotation="true"
          verbose="true">
-    <testsuite name="Support">
-        <directory suffix="Test.php">../../../../tests</directory>
+    <testsuite name="Tests">
+        <directory suffix="Test.php">../../../tests</directory>
     </testsuite>
 
     <logging>
-        <log type="coverage-html" target="../../../../build/coverage"/>
-        <log type="coverage-clover" target="../../../../build/logs/clover.xml"/>
-        <log type="coverage-crap4j" target="../../../../build/logs/crap4j.xml"/>
-        <log type="coverage-xml" target="../../../../build/logs/coverage"/>
-        <log type="junit" target="../../../../build/logs/junit.xml"/>
+        <log type="coverage-html" target="../../../build/coverage"/>
+        <log type="coverage-clover" target="../../../build/logs/clover.xml"/>
+        <log type="coverage-crap4j" target="../../../build/logs/crap4j.xml"/>
+        <log type="coverage-xml" target="../../../build/logs/coverage"/>
+        <log type="junit" target="../../../build/logs/junit.xml"/>
     </logging>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">../../../../src</directory>
+            <directory suffix=".php">../../../src</directory>
             <exclude>
-                <file>../../../../src/autoload.php</file>
+                <file>../../../src/autoload.php</file>
             </exclude>
         </whitelist>
     </filter>
