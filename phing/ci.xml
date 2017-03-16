@@ -1,5 +1,5 @@
 <!--suppress PhingDomInspection -->
-<project name="ci">
+<project name="ci" >
     <!--
     Description:
         This Phing file should be imported by packages that are coupled in Jenkins.
@@ -7,31 +7,30 @@
     -->
     <property name="has-tests" value="true"/>
 
-    <target name="build" depends="clean,prepare,lint,phploc-ci,pdepend,phpcs-ci,phpcpd-ci,phpunit,phpdox,phpdoc" description=""/>
 
-    <target name="clean" unless="clean.done"  description="Cleanup build artifacts">
-        <delete dir="${project.basedir}/raport/api"/>
-        <delete dir="${project.basedir}/raport/coverage"/>
-        <delete dir="${project.basedir}/raport/logs"/>
-        <delete dir="${project.basedir}/raport/pdepend"/>
-        <delete dir="${project.basedir}/raport/phpdox"/>
-        <delete dir="${project.basedir}/raport/phpdoxwd"/>
-        <delete dir="${project.basedir}/raport/phpdoc"/>
-        <delete dir="${project.basedir}/raport/phpdoc"/>
-        <property name="clean.done" value="true"/>
+    <target name="ci.clean" unless="ci.clean.done"  description="Cleanup build artifacts">
+        <delete dir="${project.basedir}/report/api"/>
+        <delete dir="${project.basedir}/report/coverage"/>
+        <delete dir="${project.basedir}/report/logs"/>
+        <delete dir="${project.basedir}/report/pdepend"/>
+        <delete dir="${project.basedir}/report/phpdox"/>
+        <delete dir="${project.basedir}/report/phpdoxwd"/>
+        <delete dir="${project.basedir}/report/phpdoc"/>
+        <delete dir="${project.basedir}/report/phpdoc"/>
+        <property name="ci.clean.done" value="true"/>
     </target>
 
-    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
-        <mkdir dir="${project.basedir}/raport/coverage"/>
-        <mkdir dir="${project.basedir}/raport/logs"/>
-        <mkdir dir="${project.basedir}/raport/pdepend"/>
-        <mkdir dir="${project.basedir}/raport/phpdox"/>
-        <mkdir dir="${project.basedir}/raport/phpdoxwd"/>
-        <mkdir dir="${project.basedir}/raport/phpdoc"/>
-        <property name="prepare.done" value="true"/>
+    <target name="ci.prepare" unless="ci.prepare.done" depends="ci.clean" description="Prepare for build">
+        <mkdir dir="${project.basedir}/report/coverage"/>
+        <mkdir dir="${project.basedir}/report/logs"/>
+        <mkdir dir="${project.basedir}/report/pdepend"/>
+        <mkdir dir="${project.basedir}/report/phpdox"/>
+        <mkdir dir="${project.basedir}/report/phpdoxwd"/>
+        <mkdir dir="${project.basedir}/report/phpdoc"/>
+        <property name="ci.prepare.done" value="true"/>
     </target>
 
-    <target name="lint" description="Perform syntax check of sourcecode files">
+    <target name="ci.lint" description="Perform syntax check of sourcecode files">
         <apply executable="php" failonerror="true">
             <arg value="-l"/>
             <fileset dir="${project.basedir}/src" >
@@ -52,16 +51,16 @@
         </if>
     </target>
 
-    <target name="pdepend" depends="prepare" description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
+    <target name="ci.pdepend" depends="ci.prepare" description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${paths.bin}/pdepend" logoutput="${logoutput}" passthru="${passthru}">
-            <arg value="--jdepend-xml=${project.basedir}/raport/logs/jdepend.xml"/>
-            <arg value="--jdepend-chart=${project.basedir}/raport/pdepend/dependencies.svg"/>
-            <arg value="--overview-pyramid=${project.basedir}/raport/pdepend/overview-pyramid.svg"/>
+            <arg value="--jdepend-xml=${project.basedir}/report/logs/jdepend.xml"/>
+            <arg value="--jdepend-chart=${project.basedir}/report/pdepend/dependencies.svg"/>
+            <arg value="--overview-pyramid=${project.basedir}/report/pdepend/overview-pyramid.svg"/>
             <arg path="${project.basedir}/src"/>
         </exec>
     </target>
 
-    <target name="phpcbf" description="Fixes coding standard violations using PHP_CodeSniffer Fixer">
+    <target name="ci.phpcbf" description="Fixes coding standard violations using PHP_CodeSniffer Fixer">
         <exec executable="${paths.bin}/phpcbf" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--tabWidth=4"/>
             <arg value="--standard=PSR2"/>
@@ -72,24 +71,24 @@
         </exec>
     </target>
 
-    <target name="phpcpd-ci" depends="prepare" description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
+    <target name="ci.phpcpd-ci" depends="ci.prepare" description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${paths.bin}/phpcpd" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--log-pmd"/>
-            <arg path="${project.basedir}/raport/logs/pmd-cpd.xml"/>
+            <arg path="${project.basedir}/report/logs/pmd-cpd.xml"/>
             <arg path="${project.basedir}/src"/>
         </exec>
     </target>
 
-    <target name="phpcpd" description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
+    <target name="ci.phpcpd" description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${paths.bin}/phpcpd" logoutput="${logoutput}" passthru="${passthru}">
             <arg path="${project.basedir}/src"/>
         </exec>
     </target>
 
-    <target name="phpcs-ci" depends="prepare" description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
+    <target name="ci.phpcs-ci" depends="ci.prepare" description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${paths.bin}/phpcs" output="/dev/null">
             <arg value="--report=checkstyle"/>
-            <arg value="--report-file=${project.basedir}/raport/logs/checkstyle.xml"/>
+            <arg value="--report-file=${project.basedir}/report/logs/checkstyle.xml"/>
             <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
             <arg value="--ignore=autoload.php"/>
@@ -97,7 +96,7 @@
         </exec>
     </target>
 
-    <target name="phpcs" depends="phpcbf" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+    <target name="ci.phpcs" depends="ci.phpcbf" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${paths.bin}/phpcs" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
@@ -107,34 +106,34 @@
         </exec>
     </target>
 
-    <target name="phpdoc" depends="prepare" description="Generate project documentation using phpDocumentator">
-        <exec executable="${paths.bin}/phpdoc" dir="${project.basedir}/raport" logoutput="${logoutput}" passthru="${passthru}">
+    <target name="ci.phpdoc" depends="ci.prepare" description="Generate project documentation using phpDocumentator">
+        <exec executable="${paths.bin}/phpdoc" dir="${project.basedir}/report" logoutput="${logoutput}" passthru="${passthru}">
             <arg line="-t ./phpdoc"/>
             <arg line="-d ../src"/>
             <arg line="--template=responsive-twig"/>
         </exec>
     </target>
 
-    <target name="phpdox" depends="phploc-ci,phpcs-ci,phpmd-ci" description="Generate project documentation using phpDox">
-        <exec executable="${paths.bin}/phpdox" dir="${project.basedir}/raport" logoutput="${logoutput}" passthru="${passthru}">
+    <target name="ci.phpdox" depends="ci.phploc-ci,ci.phpcs-ci,ci.phpmd-ci" description="Generate project documentation using phpDox">
+        <exec executable="${paths.bin}/phpdox" dir="${project.basedir}/report" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--file"/>
-            <arg path="${phing.build.phing.tool-config}/phpdox.xml"/>
+            <arg path="${paths.build.phing.tool-config}/phpdox.xml"/>
         </exec>
     </target>
 
-    <target name="phploc-ci" depends="prepare" description="Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.">
+    <target name="ci.phploc-ci" depends="ci.prepare" description="Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${paths.bin}/phploc" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--count-tests"/>
             <arg value="--log-csv"/>
-            <arg path="${project.basedir}/raport/logs/phploc.csv"/>
+            <arg path="${project.basedir}/report/logs/phploc.csv"/>
             <arg value="--log-xml"/>
-            <arg path="${project.basedir}/raport/logs/phploc.xml"/>
+            <arg path="${project.basedir}/report/logs/phploc.xml"/>
             <arg path="${project.basedir}/src"/>
             <arg path="${project.basedir}/tests"/>
         </exec>
     </target>
 
-    <target name="phploc" description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
+    <target name="ci.phploc" description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
         <exec executable="${paths.bin}/phploc" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--count-tests"/>
             <arg path="${project.basedir}/src"/>
@@ -142,30 +141,32 @@
         </exec>
     </target>
 
-    <target name="phpmd-ci" depends="prepare" description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
+    <target name="ci.phpmd-ci" depends="ci.prepare" description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${paths.bin}/phpmd" logoutput="${logoutput}" passthru="${passthru}">
             <arg path="${project.basedir}/src"/>
             <arg value="xml"/>
-            <arg path="${phing.build.phing.tool-config}/tool-config/phpmd.xml"/>
+            <arg path="${paths.build.phing.tool-config}/phpmd.xml"/>
             <arg value="--reportfile"/>
-            <arg path="${project.basedir}/raport/logs/pmd.xml"/>
+            <arg path="${project.basedir}/report/logs/pmd.xml"/>
         </exec>
     </target>
 
-    <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+    <target name="ci.phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+
         <exec executable="${paths.bin}/phpmd" logoutput="${logoutput}" passthru="${passthru}">
             <arg path="${project.basedir}/src"/>
             <arg value="text"/>
-            <arg path="${phing.build.phing.tool-config}/phpmd.xml"/>
+            <arg path="${paths.build.phing.tool-config}/phpmd.xml"/>
         </exec>
     </target>
 
-    <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
+    <target name="ci.phpunit" depends="ci.prepare" description="Run unit tests with PHPUnit">
+        <echo message="${paths.bin}/phpunit --configuration ${paths.build.phing.tool-config}/phpunit.xml --bootstrap ${paths.vendor}/autoload.php"/>
         <exec executable="${paths.bin}/phpunit" logoutput="${logoutput}" passthru="${passthru}">
             <arg value="--configuration"/>
-            <arg path="${phing.build.phing.tool-config}/phpunit.xml"/>
+            <arg path="${paths.build.phing.tool-config}/phpunit.xml"/>
             <arg value="--bootstrap"/>
-            <arg path="${vendor.dir}/autoload.php"/>
+            <arg path="${paths.vendor}/autoload.php"/>
         </exec>
     </target>
 
