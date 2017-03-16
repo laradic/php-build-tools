@@ -9,10 +9,8 @@
  * @copyright Copyright 2017 (c) Robin Radic
  * @license https://laradic.mit-license.org The MIT License
  */
-
 class GitBumpTask extends GitBaseTask
 {
-
     /**
      *  Called by the project to let the task do it's work. This method may be
      *  called more than once, if the task is invoked more than once. For

@@ -15,20 +15,20 @@
     <property name="git.repo" value="NOT SET"/>
     <property name="git.commit.message" value="Auto commit"/>
 
-    <target name="add" description="Add files">
+    <target name="git.add" description="Add files">
         <exec command="git add -A" logoutput="${logoutput}" passthru="${passthru}"/>
     </target>
 
-    <target name="commit.auto" description="Commit files with auto message">
+    <target name="git.commit.auto" description="Commit files with auto message">
         <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
     </target>
 
-    <target name="commit" description="Commit files with auto message">
+    <target name="git.commit" description="Commit files with auto message">
         <input message="Git commit message" propertyName="git.commit.message"/>
         <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
     </target>
 
-    <target name="push" description="push commit">
+    <target name="git.push" description="push commit">
         <input message="Git commit message" propertyName="git.commit.message"/>
         <exec command="git commit -m '${git.commit.message}'" logoutput="${logoutput}" passthru="${passthru}"/>
     </target>
